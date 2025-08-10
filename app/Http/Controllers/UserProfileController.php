@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserProfile\StoreRequest;
 use App\Http\Requests\UserProfile\UpdateRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\UserProfile;
+
 
 
 class UserProfileController extends Controller

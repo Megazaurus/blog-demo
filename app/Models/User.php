@@ -61,6 +61,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(NoticeBoard::class);
     }
+        public function Post(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
     
 
     

@@ -14,12 +14,12 @@ class NoticeBoard extends Model
         'post_id',
     ];
 
-    public function User(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function Post(): BelongsTo
+    public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
     }

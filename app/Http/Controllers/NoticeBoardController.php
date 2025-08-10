@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\NoticeBoardRequest;
+use App\Http\Requests\NoticeBoard\IndexRequest;
+use App\Http\Requests\NoticeBoard\StoreRequest;
+
 use App\Models\NoticeBoard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
