@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 use App\Http\Requests\Post\IndexRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
@@ -26,7 +27,7 @@ class PostController extends Controller
             ->when(array_key_exists('content', $data) && $data['content'], fn($query) => $query->where('content', 'like', '%' . $data['content'] . '%'))
             ->when(array_key_exists('user_id', $data) && $data['user_id'], fn($query) => $query->where('user_id', $data['user_id']))
             ->paginate(perPage: $count, page: $page);
-        
+
 
         return response()->json($posts);
     }
@@ -37,9 +38,15 @@ class PostController extends Controller
     public function store(StoreRequest $request)
     {
         $validated = $request->validated();
-        $validated['user_id'] = Auth::id();
-        $posts = Post::create($validated);
-        return response()->json($posts, 201);
+        $user = Auth::user();
+
+        $noticeBoard = $user->noticeBoard()->firstOrCreate([]);
+
+        $validated['user_id'] = $user->id;
+        $validated['notice_board_id'] = $noticeBoard->id;
+
+        $post = Post::create($validated);
+        return response()->json($post, 201);
     }
 
     /**

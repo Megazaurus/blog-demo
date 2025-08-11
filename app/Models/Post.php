@@ -15,19 +15,20 @@ class Post extends Model
     protected $fillable = [
         'user_id',
         'content',
+        'notice_board_id',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    public function noticeBoard(): HasMany
+    public function noticeBoard(): BelongsTo
     {
-        return $this->hasMany(NoticeBoard::class);
+        return $this->belongsTo(NoticeBoard::class);
     }
     public function postImage()
     {
-        return $this->hasMany(PostImages::class);
+        return $this->hasMany(PostImage::class);
     }
 
 }

@@ -12,13 +12,7 @@ use App\Models\UserProfile;
 
 class UserProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -26,9 +20,21 @@ class UserProfileController extends Controller
     public function store(StoreRequest $request)
     {
         $validated = $request->validated();
-        $validated['user_id'] = Auth::id();
-        $profile = UserProfile::create($validated);
-        return response()->json($profile, 201);
+        $userId = Auth::id();
+
+        // Пенревіряєм наявність профіля
+        $profile = UserProfile::where('user_id', $userId)->first();
+
+        if ($profile) {
+            // Якщо профіль існує — обновляем його
+            $profile->update($validated);
+            return response()->json($profile, 202);
+        } else {
+            // Якщо профіля нема — создаєм новий
+            $validated['user_id'] = $userId;
+            $profile = UserProfile::create($validated);
+            return response()->json($profile, 201); // 201 Created — создан новый
+        }
     }
 
     /**
@@ -45,37 +51,19 @@ class UserProfileController extends Controller
         return response()->json($profile);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateRequest $request, UserProfile $user)
-    {
-        $data = $request->validated();
-        $user = Auth::user();
-        $profile = $user->userProfile;
-
-        if (!$profile) {
-
-            return response()->json(['message' => 'Профіль не знайдено'], 404);
-        }
-
-        $profile->update($data);
-
-        return response()->json($profile, 202);
-    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserProfile $profile)
+    public function destroy(UserProfile $userProfile)
     {
-        $profile = Auth::user()->userProfile;
+        $userProfile = Auth::user()->userProfile;
 
-        if ($profile) {
-            $profile->delete();
-            return response()->json(null, 204);
+        if ($userProfile) {
+            $userProfile->delete();
+            return response()->json(['message' => 'Профіль видалено'], 204);
         }
 
-        return response()->json(['message' => 'Профиль не найден'], 404);
+        return response()->json(['message' => 'Профіль не знайдено'], 404);
     }
 }

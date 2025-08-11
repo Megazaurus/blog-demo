@@ -13,7 +13,6 @@ return new class extends Migration {
         Schema::create('notice_boards', function (Blueprint $table) {
             $table->id();
             $table->foreignId(column: 'user_id');
-            $table->foreignId(column: 'post_id');
             $table->timestamps();
         });
     }

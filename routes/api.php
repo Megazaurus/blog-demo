@@ -26,13 +26,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('avatar-images', AvatarImageController::class);
 
-    Route::apiResource('notice-boards', NoticeBoardController::class);
+    Route::get('notice-boards/{notice}', [NoticeBoardController::class, 'show']);
 
     Route::apiResource('posts', PostController::class);
 
     Route::apiResource('post-images', PostImageController::class);
 
-    Route::apiResource('user-profiles', UserProfileController::class);
+    Route::apiResource('user-profiles', UserProfileController::class)
+        ->only(['show', 'store', 'destroy']);
 
     Route::apiResource('user-reactions', UserReactionController::class);
 

@@ -49,23 +49,29 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function getNoticeBoard()
+    {
+        return $this->noticeBoard()->firstOrCreate([]);
+    }
+
     public function avatarImage(): HasOne
     {
         return $this->hasOne(AvatarImage::class);
     }
-    public function UserProfile(): HasOne
+
+    public function userProfile(): HasOne
     {
         return $this->hasOne(UserProfile::class);
     }
-    public function NoticeBoard(): HasMany
+
+    public function noticeBoard(): HasOne
     {
-        return $this->hasMany(NoticeBoard::class);
+        return $this->hasOne(NoticeBoard::class);
     }
-        public function Post(): HasMany
+
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
-    
-
     
 }
